@@ -26,7 +26,16 @@ pub trait Arith: Clone {
     /// Returns the number of witnesses / secret inputs in the constraint system
     fn n_witnesses(&self) -> usize;
 
-    /// Returns a tuple containing (w, x) (witness and public inputs respectively)
+    /// Splits the assignment vector `z` into witness and public inputs.
+    ///
+    /// The input vector `z` must have the format `[1, x, w]` where:
+    /// - `z[0] = 1` (constant)
+    /// - `z[1..l+1] = x` (public inputs, length `l = n_public_inputs()`)
+    /// - `z[l+1..] = w` (witness)
+    ///
+    /// Returns a tuple `(w, x)` containing:
+    /// - `w`: witness vector (secret inputs)
+    /// - `x`: public inputs vector
     fn split_z<F: PrimeField>(&self, z: &[F]) -> (Vec<F>, Vec<F>);
 }
 
