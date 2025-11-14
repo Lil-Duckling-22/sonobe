@@ -90,6 +90,16 @@ impl<F: PrimeField> Arith for CCS<F> {
         self.n_variables() - self.n_public_inputs() - 1
     }
 
+    /// Splits the assignment vector `z` into witness and public inputs.
+    ///
+    /// The input vector `z` must have the format `[1, x, w]` where:
+    /// - `z[0] = 1` (constant)
+    /// - `z[1..l+1] = x` (public inputs, length `l = n_public_inputs()`)
+    /// - `z[l+1..] = w` (witness)
+    ///
+    /// Returns a tuple `(w, x)` containing:
+    /// - `w`: witness vector (secret inputs)
+    /// - `x`: public inputs vector
     fn split_z<P: PrimeField>(&self, z: &[P]) -> (Vec<P>, Vec<P>) {
         (z[self.l + 1..].to_vec(), z[1..self.l + 1].to_vec())
     }
